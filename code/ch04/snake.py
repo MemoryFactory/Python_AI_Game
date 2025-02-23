@@ -3,9 +3,9 @@ import random
 from collections import namedtuple
 from pygame.locals import K_RIGHT,K_LEFT,K_UP,K_DOWN,QUIT
 
-Position = namedtuple('Point', 'x, y')
+Position = namedtuple('Point', 'x, y') #定义带名字的元组，方便用.x和.y来使用坐标值
 
-class Direction:
+class Direction: #不需要实例，直接使用类属性
     right = 0
     left = 1
     up = 2
@@ -14,11 +14,11 @@ class Direction:
 class Snake:
 
     def __init__(self,block_size):
-        self.blocks=[]
-        self.blocks.append(Position(20,15))
-        self.blocks.append(Position(19,15))
+        self.blocks=[] #用列表储存蛇头蛇身坐标
+        self.blocks.append(Position(20,15)) #放蛇头
+        self.blocks.append(Position(19,15)) #放一个蛇身
         self.block_size = block_size
-        self.current_direction = Direction.right
+        self.current_direction = Direction.right #记录当前移动方向
         self.image = pygame.image.load('snake.png')
     
     def move(self):
@@ -31,8 +31,9 @@ class Snake:
         else:
             movesize = (0, 1)
         head = self.blocks[0]
-        new_head = Position(head.x + movesize[0], head.y + movesize[1])  
-        self.blocks.insert(0,new_head)
+        new_head = Position(head.x + movesize[0], head.y + movesize[1]) #当前蛇头坐标朝移动方向增加1，获得新的坐标
+        self.blocks.insert(0,new_head) #在移动方向增加一个新蛇头，相当于移动一格
+
 
     def handle_input(self):
         keys = pygame.key.get_pressed()      
@@ -49,13 +50,13 @@ class Snake:
     def draw(self,surface,frame):
         for index, block in enumerate(self.blocks):
             positon = (block.x * self.block_size, 
-                    block.y * self.block_size)
+                    block.y * self.block_size) #计算绘图的位置坐标，格子数×格子边长的像素数
             if index == 0:
                 src = (((self.current_direction * 2) + frame) * self.block_size,
-                         0, self.block_size, self.block_size)
+                         0, self.block_size, self.block_size) #通过current_direction来选择对应方向的蛇头小图片，frame用来切换蛇头张嘴和闭嘴的小图片
             else:
                 src = (8 * self.block_size, 0, self.block_size, self.block_size)
-            surface.blit(self.image, positon, src)
+            surface.blit(self.image, positon, src) #第三个参数src用来切割源图片的切割坐标（左上角横坐标，左上角纵坐标，长尺寸，宽尺寸）
 
 
 class Berry:
@@ -76,13 +77,14 @@ class Wall:
 
     def __init__(self,block_size):
         self.block_size = block_size
-        self.map = self.load_map('map.txt')
+        self.map = self.load_map('map.txt') #map.txt用数字来描述地图，1代表放置墙，其他数字代表不放
         self.image = pygame.image.load('wall.png')
 
     def load_map(self,fileName):
         with open(fileName,'r') as map_file:
             content = map_file.readlines()
-            content =  [list(line.strip()) for line in content]
+            content =  [list(line.strip()) for line in content] #嵌套列表[[行1],[行2],...,[行n]]
+            # print(content)
         return content  
 
     def draw(self,surface):
@@ -100,8 +102,8 @@ class Game:
         pygame.init()
         self.block_size = 16
         self.Win_width , self.Win_height = (Width, Height)
-        self.Space_width = self.Win_width//self.block_size-2
-        self.Space_height = self.Win_height//self.block_size-2
+        self.Space_width = self.Win_width//self.block_size-2 #格子的宽度数
+        self.Space_height = self.Win_height//self.block_size-2 #格子的高度数
         self.surface = pygame.display.set_mode((self.Win_width, self.Win_height))
         self.score = 0
         self.frame = 0
@@ -114,7 +116,7 @@ class Game:
         self.wall = Wall(self.block_size)
         self.position_berry()
 
-    def position_berry(self):
+    def position_berry(self): #在格子里随机放置果子
         bx = random.randint(1, self.Space_width)
         by = random.randint(1, self.Space_height)
         self.berry.position = Position(bx, by)
@@ -125,11 +127,11 @@ class Game:
     def berry_collision(self):
         head = self.snake.blocks[0]
         if (head.x == self.berry.position.x and
-            head.y == self.berry.position.y):
+            head.y == self.berry.position.y): #碰到果子，重新随机放置一个果子，分数加1
             self.position_berry()
             self.score += 1
         else:
-            self.snake.blocks.pop()
+            self.snake.blocks.pop() #没碰到果子，蛇尾减1个
 
     def head_hit_body(self):
         head = self.snake.blocks[0]
@@ -166,8 +168,8 @@ class Game:
                 if event.type == QUIT:
                     self.running = False
 
-            self.frame = (self.frame + 1) % 2
-            self.snake.handle_input()
+            self.frame = (self.frame + 1) % 2 #通过0、1变化来控制蛇头张嘴闭嘴动画
+            self.snake.handle_input()   #蛇头方向
             self.berry_collision()
             if self.head_hit_wall() or self.head_hit_body():
                 print('Final Score', self.score)

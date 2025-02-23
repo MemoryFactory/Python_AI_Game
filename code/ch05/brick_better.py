@@ -10,7 +10,7 @@ from  math import radians, sin, cos, asin
 class Resources:
 
 	def __init__(self):
-		self.explosion = []
+		self.explosion = [] #列表储存爆炸连续变化的图片
 		for i in range(1,5):
 			self.explosion.append(pygame.image.load(f"item-feedback/item-feedback-{i}.png"))
  

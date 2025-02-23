@@ -26,6 +26,7 @@ while running:
             running = False
             
         if event.type == pygame.KEYDOWN:
+            print(event.type)
             if event.key == pygame.K_b:
                 circle_color = BLUE
             elif event.key == pygame.K_g:

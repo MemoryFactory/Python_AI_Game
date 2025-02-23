@@ -14,7 +14,7 @@ WHITE = (255, 255, 255)
 GRAY = (127, 127, 127)
 
 #Give a background color to the display
-display_surface.fill(WHITE)
+display_surface.fill(GRAY)
 
 #Create images...returns a Surface object with the image drawon on it.
 #We can then get the rect of the surface and use the rect to position the image.
@@ -25,7 +25,7 @@ dragon_rect.center = (WINDOW_WIDTH//2, WINDOW_HEIGHT//2)
 font = pygame.font.Font('WenQuan.ttf', 32)
 text = font.render("飞龙在天", True, GRAY, WHITE)
 text_rect = text.get_rect()
-text_rect.center = (WINDOW_WIDTH//2, text_rect.height//2)
+text_rect.center = (WINDOW_WIDTH//2, text_rect.height//2+1)
 
 #The main game loop
 running = True
@@ -36,7 +36,7 @@ while running:
 
     #Blit (copy) a surface object at the given coordinates to our display
     display_surface.blit(dragon_image, dragon_rect)
-    pygame.draw.rect(display_surface, GRAY,dragon_rect, 4)
+    pygame.draw.rect(display_surface, WHITE,dragon_rect, 4)
     display_surface.blit(text, text_rect)
 
     #Update the display

@@ -89,7 +89,7 @@ class Game:
 
     def paddle_collision(self,paddle):
         if (self.ball.rect.centery >= paddle.rect.top and 
-            self.ball.rect.centery <= paddle.rect.bottom):
+            self.ball.rect.centery <= paddle.rect.bottom): #控制球心坐标在球板顶和低之间，避免顶部和底部的侧面与球相碰的情况
             if self.ball.rect.colliderect(paddle.rect):
                 self.ball.x_vel *= -1
 
@@ -111,14 +111,14 @@ class Game:
             self.left_score += 1
             self.ball.reset()
 
-        if self.ball.x_vel < 0:
+        if self.ball.x_vel < 0: #根据横轴球移动增加值的正负来选择使用哪侧的球板进行碰撞检测
             self.paddle_collision(self.left_paddle)
         else:
             self.paddle_collision(self.right_paddle)
 
 
     def handle_paddle_movement(self):
-        keys = pygame.key.get_pressed()
+        keys = pygame.key.get_pressed() #按w和s键会出现没有响应，这是因为处于中文输入模式，需要先切换为英文输入
         if (keys[pygame.K_w] and 
             self.left_paddle.rect.top - self.left_paddle.VEL >= 0):
             self.left_paddle.move(up=True)
@@ -132,7 +132,7 @@ class Game:
             self.right_paddle.rect.bottom  + self.right_paddle.VEL <= self.Win_height):
             self.right_paddle.move(up=False)
 
-    def game_is_win(self):
+    def game_is_win(self): #有一侧得分大于等于win_score则该侧赢得游戏
         won = False 
         if self.left_score >= self.win_score:
             won = True
@@ -145,7 +145,7 @@ class Game:
             self.surface.blit(text, (self.Win_width//2 - text.get_width() //
                             2, self.Win_height//2 - text.get_height()//2))
             pygame.display.update()
-            pygame.time.delay(5000)
+            pygame.time.delay(5000) #窗口冻结5s
             self.ball.reset()
             self.left_paddle.reset()
             self.right_paddle.reset()

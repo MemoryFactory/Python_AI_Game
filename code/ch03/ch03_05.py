@@ -1,4 +1,6 @@
 import pygame
+from pygame import K_ESCAPE
+
 pygame.init()
 
 WINDOW_WIDTH = 600
@@ -28,7 +30,7 @@ fpsClock = pygame.time.Clock()
 running = True
 while running:
     for event in pygame.event.get():
-        if event.type == pygame.QUIT:
+        if event.type == pygame.QUIT or event.type == pygame.KEYUP:
             running = False
 
     dragon_rect.x += speed[0]

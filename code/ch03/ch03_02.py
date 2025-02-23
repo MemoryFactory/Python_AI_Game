@@ -18,6 +18,7 @@ display_surface.fill(WHITE)
 
 #Circle(surface, color, center, radius, thickness...0 for fill)
 pygame.draw.circle(display_surface, BLUE, (WINDOW_WIDTH//2, WINDOW_HEIGHT//2), 150)
+pygame.draw.circle(display_surface,WHITE,(WINDOW_WIDTH//2, WINDOW_HEIGHT//2),50)
 
 #Rectangle(surface, color, (top-left x, top-left y, width, height))
 pygame.draw.rect(display_surface, BLUE, (0, 0, 100, 100))

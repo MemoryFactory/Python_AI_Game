@@ -41,6 +41,8 @@ while running:
 
     # 键盘连续移动，常用于按住操作，例如方向移动
     keys = pygame.key.get_pressed()
+    print(keys)
+    print(pygame.K_a)
     if keys[pygame.K_a]:
         dragon_rect.x -= speed[0]
     if keys[pygame.K_d]:
